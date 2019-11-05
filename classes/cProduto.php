@@ -3,29 +3,31 @@
         private $pdo;
         public function __construct($dbName,$dbHost,$dbUser,$dbSenha){
             try {
-                $this->pdo = new PDO("mysql: dbname=".$dbName.";host=".$dbHost,$dbUser,$dbSenha);
+                $this->pdo = new PDO("mysql:dbname=".$dbName.";host=".$dbHost,$dbUser,$dbSenha);
             } catch (PDOException $e) {
                 echo "Erro com BD: ".$e->getMessage();
+                exit();
             } catch (Exception $e) {
                 echo "Erro generico: ".$e->getMessage();
+                exit();
             }
         }
         public function enviarProduto($nome,$descricao,$fotos = array()){
             //produto
-            $sql = $this->pdo->prepare("INSERT INTO produtos (nome_produto, descricao) VALUES (:n, :d)");
-            $sql->bindValue(":n", $nome);
-            $sql->bindValue(":d", $descricao);
-            $sql->execute();         
+            $cmd = $this->pdo->prepare("INSERT INTO produtos (nome_produto,descricao) VALUES (:n,:d)");
+            $cmd->bindValue(":n", $nome);
+            $cmd->bindValue(":d", $descricao);
+            $cmd->execute();         
             //id produto
             $idProd = $this->pdo->lastInsertId();
-            if(count($fotos) > 0){   
+            if(count($fotos) > 0){
                 //fotos
-                for ($i=0; $i < count($fotos); $i++) { 
+                for ($i=0; $i < count($fotos); $i++){
                     $nome_foto = $fotos[$i];
-                    $sql = $this->pdo->prepare("INSERT INTO imagens (nome_imagem,fk_id_produto) VALUES (:n,:fk)");
-                    $sql->bindValue(':n', $nome_foto);
-                    $sql->bindValue(':fk', $idProd);
-                    $sql->execute();
+                    $cmd = $this->pdo->prepare("INSERT INTO imagens (nome_imagem,fk_id_produto) VALUES (:n,:fk)");
+                    $cmd->bindValue(':n', $nome_foto);
+                    $cmd->bindValue(':fk', $idProd);
+                    $cmd->execute();
                 }
             }
         }

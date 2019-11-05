@@ -1,3 +1,6 @@
+<?php
+    ob_start();
+?>
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
@@ -37,13 +40,13 @@
             $p = new Produto('php','localhost','root','');
             $p->enviarProduto($nome,$descricao,$fotos);
             ?>
-                <script>
+                <script type="text/javascript">
                     alert('Produto cadastrado com sucesso!');
                 </script>
             <?php
         }else {
             ?>
-                <script>
+                <script type="text/javascript">
                     alert('Preecha os campos obrigatórios!');
                 </script>
             <?php
