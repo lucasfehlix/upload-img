@@ -7,12 +7,25 @@
 </head>
 <body>
 	<section>
-		<a href="exibir_produto.php">
-			<div>
-				<img src="img/295d5e781ffd2f97a73d47468c7c1775.jpg">
-				<h2>Calça Jeans</h2>
-			</div>
-		</a>
+		<?php
+			require "classes/cProduto.php";
+			$p = new Produto('php','localhost','root','');
+			$dadosProd = $p->buscarProdutos();
+			if(empty($dadosProd)){
+				echo "Ainda não há produtos cadastrados aqui!";
+			}else {
+				foreach ($dadosProd as $v) {
+					?>
+						<a href="exibir_produto.php?id=<?php echo $v['id_produto'];?>">
+							<div>
+								<img src="img/<?php echo $v['foto_capa'];?>">
+								<h2><?php echo $v['nome_produto'];?></h2>
+							</div>
+						</a>
+					<?php	
+				}
+			}
+		?>
 	</section>
 </body>
 </html>
